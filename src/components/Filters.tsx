@@ -30,9 +30,11 @@ function Pill({
 export function Filters({
   filters,
   onChange,
+  clients,
 }: {
   filters: FilterState;
   onChange: (filters: FilterState) => void;
+  clients: string[];
 }) {
   return (
     <div className="flex flex-col gap-3 rounded-2xl bg-cream p-1">
@@ -60,6 +62,20 @@ export function Filters({
             {opt}
           </Pill>
         ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-bold tracking-wide text-ink-soft uppercase">Client</span>
+        <select
+          value={filters.client}
+          onChange={(e) => onChange({ ...filters, client: e.target.value })}
+          className="rounded-full border border-lilac-deep/30 bg-paper px-3 py-1.5 text-sm font-semibold text-ink-soft focus:border-lilac-deep focus:outline-none"
+        >
+          <option value="All">All clients</option>
+          {clients.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">

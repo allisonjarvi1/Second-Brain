@@ -29,18 +29,26 @@ const EMPTY_DRAFT: TaskDraft = {
 const FIELD = 'w-full rounded-xl border border-lilac-deep/30 bg-paper px-3 py-2 text-sm text-ink focus:border-lilac-deep focus:outline-none';
 const LABEL = 'text-xs font-bold tracking-wide text-ink-soft uppercase';
 
+const NEW_CLIENT = '__new__';
+
 export function TaskFormModal({
   task,
+  clients,
+  onAddClient,
   onSave,
   onDelete,
   onClose,
 }: {
   task: Task | null;
+  clients: string[];
+  onAddClient: (name: string) => void;
   onSave: (draft: TaskDraft) => void;
   onDelete?: () => void;
   onClose: () => void;
 }) {
   const [draft, setDraft] = useState<TaskDraft>(EMPTY_DRAFT);
+  const [addingClient, setAddingClient] = useState(false);
+  const [newClientName, setNewClientName] = useState('');
 
   useEffect(() => {
     if (task) {
@@ -49,10 +57,33 @@ export function TaskFormModal({
     } else {
       setDraft(EMPTY_DRAFT);
     }
+    setAddingClient(false);
+    setNewClientName('');
   }, [task]);
 
   function update<K extends keyof TaskDraft>(key: K, value: TaskDraft[K]) {
     setDraft((d) => ({ ...d, [key]: value }));
+  }
+
+  function handleClientChange(value: string) {
+    if (value === NEW_CLIENT) {
+      setAddingClient(true);
+      setNewClientName('');
+    } else {
+      update('client', value);
+    }
+  }
+
+  function confirmNewClient() {
+    const trimmed = newClientName.trim();
+    if (!trimmed) {
+      setAddingClient(false);
+      return;
+    }
+    onAddClient(trimmed);
+    update('client', trimmed);
+    setAddingClient(false);
+    setNewClientName('');
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -98,7 +129,38 @@ export function TaskFormModal({
             </div>
             <div>
               <label className={LABEL}>Client</label>
-              <input className={`${FIELD} mt-1`} value={draft.client} onChange={(e) => update('client', e.target.value)} placeholder="Optional" />
+              {addingClient ? (
+                <div className="mt-1 flex gap-1">
+                  <input
+                    className={FIELD}
+                    value={newClientName}
+                    onChange={(e) => setNewClientName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        confirmNewClient();
+                      }
+                    }}
+                    placeholder="New client name"
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={confirmNewClient}
+                    className="rounded-xl bg-lilac-deep px-3 text-sm font-semibold text-white"
+                  >
+                    Add
+                  </button>
+                </div>
+              ) : (
+                <select className={`${FIELD} mt-1`} value={draft.client} onChange={(e) => handleClientChange(e.target.value)}>
+                  <option value="">No client</option>
+                  {(draft.client && !clients.includes(draft.client) ? [draft.client, ...clients] : clients).map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                  <option value={NEW_CLIENT}>+ Add new client…</option>
+                </select>
+              )}
             </div>
             <div>
               <label className={LABEL}>Type</label>

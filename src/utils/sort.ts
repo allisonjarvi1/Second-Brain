@@ -34,6 +34,13 @@ export function sortTasks(tasks: Task[], sort: SortState): Task[] {
         else result = a.deadline.localeCompare(b.deadline);
         break;
       }
+      case 'client': {
+        if (!a.client && !b.client) result = 0;
+        else if (!a.client) return 1;
+        else if (!b.client) return -1;
+        else result = a.client.localeCompare(b.client);
+        break;
+      }
     }
     return sort.direction === 'asc' ? result : -result;
   });

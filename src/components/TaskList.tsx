@@ -16,6 +16,7 @@ import {
 
 const COLUMNS: { field: SortField; label: string }[] = [
   { field: 'title', label: 'Task' },
+  { field: 'client', label: 'Client' },
   { field: 'status', label: 'Status' },
   { field: 'priority', label: 'Priority' },
   { field: 'energyNeeded', label: 'Energy' },
@@ -93,9 +94,9 @@ export function TaskList({
                 >
                   <td className="px-4 py-3">
                     <p className="font-semibold text-ink">{task.title}</p>
-                    <p className="text-xs text-ink-soft">
-                      {task.bucket === 'Client Work' ? task.client || 'Client Work' : 'Personal Idea'}
-                    </p>
+                  </td>
+                  <td className="px-4 py-3 text-ink-soft">
+                    {task.bucket === 'Client Work' ? task.client || '—' : 'Personal'}
                   </td>
                   <td className="px-4 py-3">
                     <Badge className={STATUS_STYLES[task.status]}>{task.status}</Badge>

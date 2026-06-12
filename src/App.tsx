@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { EnergyLevel, Task } from './types';
 import { useTasks } from './hooks/useTasks';
+import { useClients } from './hooks/useClients';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { DEFAULT_FILTERS, DEFAULT_SORT, type FilterState, type SortState } from './types-filters';
 import { EnergyCheckIn } from './components/EnergyCheckIn';
@@ -15,6 +16,7 @@ import { sortTasks } from './utils/sort';
 
 function App() {
   const { tasks, addTask, updateTask, deleteTask } = useTasks();
+  const { clients, addClient } = useClients();
   const [currentEnergy, setCurrentEnergy] = useLocalStorage<EnergyLevel>('second-brain-energy', 'Medium');
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
@@ -29,6 +31,7 @@ function App() {
       if (filters.dueSoon && !isDueSoon(task.deadline)) return false;
       if (filters.statusGroup === 'In Progress' && task.status !== 'In Progress') return false;
       if (filters.statusGroup === 'Parked' && task.status !== 'Parked') return false;
+      if (filters.client !== 'All' && task.client !== filters.client) return false;
       if (filters.search.trim()) {
         const q = filters.search.trim().toLowerCase();
         const haystack = `${task.title} ${task.client} ${task.notes} ${task.nextAction}`.toLowerCase();
@@ -100,7 +103,7 @@ function App() {
         <QuickAdd onAdd={addTask} onOpenFull={openNewTaskModal} />
 
         <section className="flex flex-col gap-3">
-          <Filters filters={filters} onChange={setFilters} />
+          <Filters filters={filters} onChange={setFilters} clients={clients} />
           <TaskList
             tasks={mainListTasks}
             currentEnergy={currentEnergy}
@@ -120,6 +123,8 @@ function App() {
       {modalOpen && (
         <TaskFormModal
           task={editingTask}
+          clients={clients}
+          onAddClient={addClient}
           onSave={handleSave}
           onDelete={editingTask ? handleDelete : undefined}
           onClose={closeModal}

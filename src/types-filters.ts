@@ -8,6 +8,7 @@ export interface FilterState {
   dueSoon: boolean;
   statusGroup: StatusGroup;
   search: string;
+  client: 'All' | string;
 }
 
 export const DEFAULT_FILTERS: FilterState = {
@@ -16,9 +17,10 @@ export const DEFAULT_FILTERS: FilterState = {
   dueSoon: false,
   statusGroup: 'All',
   search: '',
+  client: 'All',
 };
 
-export type SortField = 'priority' | 'deadline' | 'status' | 'title' | 'energyNeeded';
+export type SortField = 'priority' | 'deadline' | 'status' | 'title' | 'energyNeeded' | 'client';
 
 export interface SortState {
   field: SortField;
