@@ -5,6 +5,7 @@ import { useClients } from './hooks/useClients';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { DEFAULT_FILTERS, DEFAULT_SORT, type FilterState, type SortState } from './types-filters';
 import { EnergyCheckIn } from './components/EnergyCheckIn';
+import { Stats } from './components/Stats';
 import { TopThree } from './components/TopThree';
 import { Filters } from './components/Filters';
 import { QuickAdd } from './components/QuickAdd';
@@ -95,6 +96,8 @@ function App() {
             + New
           </button>
         </header>
+
+        <Stats tasks={tasks} />
 
         <EnergyCheckIn currentEnergy={currentEnergy} onChange={setCurrentEnergy} />
 
