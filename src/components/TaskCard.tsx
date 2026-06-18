@@ -30,7 +30,7 @@ export function TaskCard({
       onClick={onClick}
       className="flex w-full flex-col gap-2 overflow-hidden rounded-2xl bg-paper p-4 text-left shadow-sm transition-shadow hover:shadow-md"
     >
-      {task.images.length > 0 && (
+      {task.images?.length > 0 && (
         <div className="-mx-4 -mt-4 mb-1 flex gap-1 overflow-x-auto">
           {task.images.map((src, i) => (
             <img key={i} src={src} alt="" className="h-28 w-full shrink-0 object-cover sm:w-auto sm:flex-1" />

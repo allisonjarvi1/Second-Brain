@@ -5,6 +5,9 @@ import type { Task } from '../types';
 export function useTasks() {
   const [tasks, setTasks] = useLocalStorage<Task[]>('second-brain-tasks', seedTasks);
 
+  // Migrate tasks from before the images field was added
+  const migratedTasks = tasks.map((t) => (t.images ? t : { ...t, images: [] as string[] }));
+
   function addTask(task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) {
     const now = new Date().toISOString();
     const newTask: Task = {
@@ -27,5 +30,5 @@ export function useTasks() {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   }
 
-  return { tasks, addTask, updateTask, deleteTask };
+  return { tasks: migratedTasks, addTask, updateTask, deleteTask };
 }
