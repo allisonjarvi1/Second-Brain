@@ -24,6 +24,7 @@ const EMPTY_DRAFT: TaskDraft = {
   notes: '',
   source: '',
   energyEffect: 'Neutral',
+  images: [],
 };
 
 const FIELD = 'w-full rounded-xl border border-lilac-deep/30 bg-paper px-3 py-2 text-sm text-ink focus:border-lilac-deep focus:outline-none';
@@ -147,7 +148,7 @@ export function TaskFormModal({
                   <button
                     type="button"
                     onClick={confirmNewClient}
-                    className="rounded-xl bg-lilac-deep px-3 text-sm font-semibold text-white"
+                    className="rounded-xl bg-chartreuse-deep px-3 text-sm font-semibold text-ink"
                   >
                     Add
                   </button>
@@ -228,6 +229,51 @@ export function TaskFormModal({
             <textarea className={`${FIELD} mt-1`} rows={3} value={draft.notes} onChange={(e) => update('notes', e.target.value)} placeholder="Anything else worth remembering" />
           </div>
 
+          <div>
+            <label className={LABEL}>Images</label>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {draft.images.map((src, i) => (
+                <div key={i} className="group relative h-20 w-20 overflow-hidden rounded-xl border border-lilac-deep/30">
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => update('images', draft.images.filter((_, idx) => idx !== i))}
+                    className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-label="Remove image"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <label className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-lilac-deep/40 text-xs font-semibold text-ink-soft hover:border-lilac-deep hover:text-ink">
+                <span className="text-lg">＋</span>
+                Add
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={async (e) => {
+                    const files = Array.from(e.target.files ?? []);
+                    const dataUrls = await Promise.all(
+                      files.map(
+                        (file) =>
+                          new Promise<string>((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve(reader.result as string);
+                            reader.onerror = reject;
+                            reader.readAsDataURL(file);
+                          }),
+                      ),
+                    );
+                    update('images', [...draft.images, ...dataUrls]);
+                    e.target.value = '';
+                  }}
+                />
+              </label>
+            </div>
+          </div>
+
           <div className="flex items-center justify-between gap-3 pt-2">
             {task && onDelete ? (
               <button type="button" onClick={onDelete} className="text-sm font-semibold text-blush-deep hover:underline">
@@ -240,7 +286,7 @@ export function TaskFormModal({
               <button type="button" onClick={onClose} className="rounded-full px-4 py-2 text-sm font-semibold text-ink-soft hover:bg-lilac">
                 Cancel
               </button>
-              <button type="submit" className="rounded-full bg-lilac-deep px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lilac-deep/90">
+              <button type="submit" className="rounded-full bg-chartreuse-deep px-5 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-chartreuse-deep/90">
                 {task ? 'Save changes' : 'Add task'}
               </button>
             </div>

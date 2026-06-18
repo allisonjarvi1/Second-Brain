@@ -91,7 +91,7 @@ function App() {
           <button
             type="button"
             onClick={openNewTaskModal}
-            className="rounded-full bg-lilac-deep px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lilac-deep/90 sm:px-5"
+            className="rounded-full bg-chartreuse-deep px-4 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-chartreuse-deep/90 sm:px-5"
           >
             + New
           </button>

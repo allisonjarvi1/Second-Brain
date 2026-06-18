@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import type { EnergyLevel, Task } from '../types';
-import { TaskCard } from './TaskCard';
+import { ParkingCard } from './ParkingCard';
 
 export function ParkingLot({
   tasks,
-  currentEnergy,
+  currentEnergy: _currentEnergy,
   onSelect,
 }: {
   tasks: Task[];
@@ -13,6 +13,7 @@ export function ParkingLot({
 }) {
   const [open, setOpen] = useState(false);
   const parked = tasks.filter((t) => t.status === 'Parked');
+  const withImages = parked.filter((t) => t.images && t.images.length > 0);
 
   return (
     <section className="rounded-2xl bg-paper p-4 shadow-sm">
@@ -22,21 +23,26 @@ export function ParkingLot({
         className="flex w-full items-center justify-between"
       >
         <div className="text-left">
-          <h2 className="font-heading text-lg font-semibold text-ink">🅿️ Parking lot</h2>
+          <h2 className="font-heading text-lg font-semibold text-ink">🌊 Parking lot</h2>
           <p className="text-sm text-ink-soft">
             {parked.length === 0
               ? 'Nothing parked — your mind is clear.'
-              : `${parked.length} idea${parked.length === 1 ? '' : 's'} resting for later`}
+              : `${parked.length} idea${parked.length === 1 ? '' : 's'} resting${withImages.length > 0 ? ` · ${withImages.length} with images` : ''}`}
           </p>
         </div>
         <span className="text-ink-soft">{open ? '▲' : '▼'}</span>
       </button>
 
       {open && parked.length > 0 && (
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {parked.map((task) => (
-            <TaskCard key={task.id} task={task} currentEnergy={currentEnergy} onClick={() => onSelect(task)} />
-          ))}
+        <div className="mt-4">
+          {/* Image-first masonry-style grid */}
+          <div className="columns-1 gap-3 sm:columns-2 lg:columns-3">
+            {parked.map((task) => (
+              <div key={task.id} className="mb-3 break-inside-avoid">
+                <ParkingCard task={task} onClick={() => onSelect(task)} />
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </section>

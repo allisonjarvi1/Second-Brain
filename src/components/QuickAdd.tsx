@@ -28,6 +28,7 @@ export function QuickAdd({
       notes: '',
       source: '',
       energyEffect: 'Neutral',
+      images: [],
     });
     setTitle('');
   }
@@ -55,7 +56,7 @@ export function QuickAdd({
         className="flex-1 rounded-xl border border-lilac-deep/30 bg-cream px-3 py-2 text-sm text-ink placeholder:text-ink-soft focus:border-lilac-deep focus:outline-none"
       />
       <div className="flex gap-2">
-        <button type="submit" className="rounded-full bg-lilac-deep px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lilac-deep/90">
+        <button type="submit" className="rounded-full bg-chartreuse-deep px-4 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-chartreuse-deep/90">
           Add
         </button>
         <button

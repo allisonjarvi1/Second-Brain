@@ -4,23 +4,27 @@
   --font-sans: "Nunito", system-ui, sans-serif;
   --font-heading: "Quicksand", system-ui, sans-serif;
 
-  --color-cream: #fdfaf5;
+  /* Coastal palette: sandy neutrals, sea blues/teals, with a hint of chartreuse */
+  --color-cream: #f6f5ef;
   --color-paper: #ffffff;
-  --color-ink: #3f3a4b;
-  --color-ink-soft: #8a8398;
+  --color-ink: #2f3e46;
+  --color-ink-soft: #7c8e93;
 
-  --color-lilac: #efe9fb;
-  --color-lilac-deep: #b8a4e3;
-  --color-sage: #e3efe6;
-  --color-sage-deep: #92bda0;
-  --color-peach: #fdebe2;
-  --color-peach-deep: #f0a98c;
-  --color-sky: #e6f1fb;
-  --color-sky-deep: #9cc3ea;
-  --color-butter: #fdf3d8;
-  --color-butter-deep: #e7c873;
-  --color-blush: #fbe7ed;
-  --color-blush-deep: #e8a0b4;
+  --color-lilac: #e2f0ee;
+  --color-lilac-deep: #5b9aa0;
+  --color-sage: #e6f0e8;
+  --color-sage-deep: #84b59b;
+  --color-peach: #fbeee2;
+  --color-peach-deep: #e3a87c;
+  --color-sky: #e3eef5;
+  --color-sky-deep: #7da9c4;
+  --color-butter: #f7f1da;
+  --color-butter-deep: #d8bd6e;
+  --color-blush: #fbe9e9;
+  --color-blush-deep: #d9897f;
+
+  --color-chartreuse: #eef6d6;
+  --color-chartreuse-deep: #b9d34a;
 }
 
 html {

@@ -32,6 +32,7 @@ export interface Task {
   notes: string;
   source: string;
   energyEffect: EnergyEffect;
+  images: string[];
   createdAt: string;
   updatedAt: string;
 }
