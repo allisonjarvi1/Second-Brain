@@ -12,6 +12,7 @@ import { QuickAdd } from './components/QuickAdd';
 import { TaskList } from './components/TaskList';
 import { ParkingLot } from './components/ParkingLot';
 import { TaskFormModal } from './components/TaskFormModal';
+import { IdeaCaptureModal } from './components/IdeaCaptureModal';
 import { isDueSoon } from './utils/energy';
 import { sortTasks } from './utils/sort';
 
@@ -24,6 +25,7 @@ function App() {
 
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [captureOpen, setCaptureOpen] = useState(false);
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
@@ -88,13 +90,22 @@ function App() {
             <h1 className="font-heading text-2xl font-bold text-ink sm:text-3xl">🧠 Second Brain</h1>
             <p className="text-sm text-ink-soft">Your calm home for client work and personal ideas.</p>
           </div>
-          <button
-            type="button"
-            onClick={openNewTaskModal}
-            className="rounded-full bg-chartreuse-deep px-4 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-chartreuse-deep/90 sm:px-5"
-          >
-            + New
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setCaptureOpen(true)}
+              className="rounded-full border border-lilac-deep/30 bg-paper px-4 py-2 text-sm font-semibold text-ink-soft shadow-sm hover:border-lilac-deep hover:text-ink sm:px-5"
+            >
+              📸 Capture
+            </button>
+            <button
+              type="button"
+              onClick={openNewTaskModal}
+              className="rounded-full bg-chartreuse-deep px-4 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-chartreuse-deep/90 sm:px-5"
+            >
+              + New
+            </button>
+          </div>
         </header>
 
         <Stats tasks={tasks} />
@@ -131,6 +142,13 @@ function App() {
           onSave={handleSave}
           onDelete={editingTask ? handleDelete : undefined}
           onClose={closeModal}
+        />
+      )}
+
+      {captureOpen && (
+        <IdeaCaptureModal
+          onAdd={addTask}
+          onClose={() => setCaptureOpen(false)}
         />
       )}
     </div>
